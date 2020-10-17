@@ -1,61 +1,99 @@
 #include <MATRIX.h>
+unsigned char MX_safety;
+void setup() {
+  MX_Init();
+  MX_teamFlag();
+}
+void loop() {
+  MX_screenBatteryV();
+  MX_runUSB();
+  if (MX_gamepadConnected()) {
+    MX_safety = 0;
+    if (MX_gamepadPress(B)) {
+      freshspeed(true);
+      robort_action();
+    } else if (MX_gamepadPress(A)) {
+      all_directions();
+    }
+    turning();
+  }
+
+  else {
+    MX_safety++;
+  }
+
+  if (MX_safety == 20) {
+    stopmotor();
+    MX_safety = 0;
+  }
+  if (MX_gamepadClick(A)) {
+    process(0);
+  }
+}
 void MX_R(int port, int speedrun) { MX_motorControl(port, 10, speedrun, 0); }
 int AM = 12;
 int BM = 1;
 int LM = 7;
 int RM = 6;
-int speed1 = 25;
-// b是前轮
-void setting(int BM1, int AM1, int LM1, int RM1, bool LM_direction1,
-             int speedpower) {
-  AM = AM1;
-  BM = BM1;
-  LM = LM1;
-  RM = RM1;
-  if (LM_direction1 == false) {
-    speedpower = -speedpower;
-  }
-  speed1 = speedpower;
-}
+int speed1 = 50;
 
-void freshspeed() {
-  int speed0 = speed1;
+void freshspeed(bool D) {
+  int speed0 = 50;
   if (MX_gamepadPress(L2) != 0 or MX_gamepadPress(R2) != 0) {
-    if (MX_gamepadPress(L2) != 0) {
+    if (MX_gamepadPress(L2) != 0 and MX_gamepadPress(R2) == 0) {
       speed0 = MX_gamepadPress(L2);
     }
-    if (MX_gamepadPress(R2) != 0) {
+    if (MX_gamepadPress(R2) != 0 and MX_gamepadPress(L2) == 0) {
       speed0 = MX_gamepadPress(R2);
     }
-  } else {
-    speed1 = speed0;
+    if (MX_gamepadPress(L2) != 0 and MX_gamepadPress(R2) != 0) {
+      speed0 = (MX_gamepadPress(R2) + MX_gamepadPress(L2)) * 0.5;
+    }
   }
+  if (D == false) {
+    speed0 = -speed0;
+  }
+  speed1 = speed0;
 }
-
+void turning() {
+  int defenda = 0;
+  int a = 11;
+  if (MX_gamepadPress(L1)) {
+    a = 5;
+    defenda = a + 1;
+  }
+  if (MX_gamepadPress(R1)) {
+    a = 6;
+  }
+  if (a == defenda) {
+    a = 0;
+  }
+  process(a);
+}
 //如果左边正转为前进 则右轮为后退，前轮为右，后轮为左
 void qian() {
-  MX_R(AM, 0);
-  MX_R(BM, 0);
+  MX_motorControl(AM, 22, 0, 0);
+  MX_motorControl(BM, 22, 0, 0);
   MX_R(LM, speed1);
   MX_R(RM, -speed1);
 }
 void hou() {
-  MX_R(AM, 0);
-  MX_R(BM, 0);
+  MX_motorControl(AM, 22, 0, 0);
+  MX_motorControl(BM, 22, 0, 0);
   MX_R(LM, -speed1);
   MX_R(RM, speed1);
 }
 void zuo() {
   MX_R(AM, speed1);
   MX_R(BM, -speed1);
-  MX_R(LM, 0);
-  MX_R(RM, 0);
+  MX_motorControl(LM, 22, 0, 0);
+  MX_motorControl(RM, 22, 0, 0);
 }
 void you() {
   MX_R(AM, -speed1);
   MX_R(BM, speed1);
-  MX_R(LM, 0);
-  MX_R(RM, 0);
+  MX_motorControl(LM, 22, 0, 0);
+  MX_motorControl(RM, 22, 0, 0);
 }
 void shunshizheng() {
   MX_R(AM, speed1);
@@ -193,7 +231,7 @@ void process(int codedo) {
     houyou();
     break;
   default:
-    stopmotor();
+
     break;
   }
 }

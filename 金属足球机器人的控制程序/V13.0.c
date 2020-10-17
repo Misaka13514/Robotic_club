@@ -1,61 +1,69 @@
 #include <MATRIX.h>
-void MX_R(int port, int speedrun) { MX_motorControl(port, 10, speedrun, 0); }
+unsigned char MX_safety;
 int AM = 12;
 int BM = 1;
 int LM = 7;
 int RM = 6;
-int speed1 = 25;
-// b是前轮
-void setting(int BM1, int AM1, int LM1, int RM1, bool LM_direction1,
-             int speedpower) {
-  AM = AM1;
-  BM = BM1;
-  LM = LM1;
-  RM = RM1;
-  if (LM_direction1 == false) {
-    speedpower = -speedpower;
-  }
-  speed1 = speedpower;
+int speed1 = 50;
+void setup() {
+  MX_Init();
+  MX_teamFlag();
 }
-
-void freshspeed() {
-  int speed0 = speed1;
-  if (MX_gamepadPress(L2) != 0 or MX_gamepadPress(R2) != 0) {
-    if (MX_gamepadPress(L2) != 0) {
-      speed0 = MX_gamepadPress(L2);
+void loop() {
+  MX_screenBatteryV();
+  MX_runUSB();
+  if (MX_gamepadConnected()) {
+    MX_safety = 0;
+    if (MX_gamepadPress(B)) {
+      robort_action();
+    } else if (MX_gamepadPress(A)) {
+      all_directions();
     }
-    if (MX_gamepadPress(R2) != 0) {
-      speed0 = MX_gamepadPress(R2);
+
+    if (MX_gamepadPress(X)) {
+      stopmotor();
+    }
+    if (MX_gamepadPress(Y)) {
+      MX_motorControl(AM, 21, 0, 0);
+      MX_motorControl(BM, 21, 0, 0);
+      MX_motorControl(RM, 21, 0, 0);
+      MX_motorControl(LM, 21, 0, 0);
     }
   } else {
-    speed1 = speed0;
+    MX_safety++;
+  }
+  if (MX_safety == 21) {
+    stopmotor();
+    MX_safety = 0;
+  }
+  if (MX_gamepadClick(A)) {
+    process(0);
   }
 }
-
-//如果左边正转为前进 则右轮为后退，前轮为右，后轮为左
+void MX_R(int port, int speedrun) { MX_motorControl(port, 10, speedrun, 0); }
 void qian() {
-  MX_R(AM, 0);
-  MX_R(BM, 0);
+  MX_motorControl(AM, 21, 0, 0);
+  MX_motorControl(BM, 21, 0, 0);
   MX_R(LM, speed1);
   MX_R(RM, -speed1);
 }
 void hou() {
-  MX_R(AM, 0);
-  MX_R(BM, 0);
+  MX_motorControl(AM, 21, 0, 0);
+  MX_motorControl(BM, 21, 0, 0);
   MX_R(LM, -speed1);
   MX_R(RM, speed1);
 }
 void zuo() {
   MX_R(AM, speed1);
   MX_R(BM, -speed1);
-  MX_R(LM, 0);
-  MX_R(RM, 0);
+  MX_motorControl(LM, 21, 0, 0);
+  MX_motorControl(RM, 21, 0, 0);
 }
 void you() {
   MX_R(AM, -speed1);
   MX_R(BM, speed1);
-  MX_R(LM, 0);
-  MX_R(RM, 0);
+  MX_motorControl(LM, 21, 0, 0);
+  MX_motorControl(RM, 21, 0, 0);
 }
 void shunshizheng() {
   MX_R(AM, speed1);
@@ -93,7 +101,6 @@ void houyou() {
   MX_R(LM, -speed1);
   MX_R(RM, speed1);
 }
-
 void stopmotor() {
   MX_R(AM, 0);
   MX_R(BM, 0);
@@ -105,10 +112,10 @@ void stopmotor() {
   MX_motorControl(RM, 22, 0, 0);
 }
 void all_directions() {
-  MX_R(LM, MX_gamepadLeftY * 0.5);
-  MX_R(RM, MX_gamepadLeftY * -0.5);
-  MX_R(AM, MX_gamepadLeftX * -0.5);
-  MX_R(BM, MX_gamepadLeftX * 0.5);
+  MX_R(LM, MX_gamepadLeftY * 0.5 * 1);
+  MX_R(RM, MX_gamepadLeftY * -0.5 * 1);
+  MX_R(AM, MX_gamepadLeftX * -0.5 * 1);
+  MX_R(BM, MX_gamepadLeftX * 0.5 * 1);
 }
 int getgamepadinput() {
   int code = 0;
@@ -156,7 +163,6 @@ int getgamepadinput() {
   code = 0;
   return (codeout);
 }
-
 void process(int codedo) {
   switch (codedo) {
   case 0:
@@ -193,7 +199,6 @@ void process(int codedo) {
     houyou();
     break;
   default:
-    stopmotor();
     break;
   }
 }

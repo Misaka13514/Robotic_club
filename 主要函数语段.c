@@ -7,71 +7,66 @@ int right2 = 8;
 
 int speed1 = 50;
 
-
-int judge(){
- int code = 0;
-   if (MX_gamepadPress(LEFT)) {
-      code = 1;
-    }
-    if (MX_gamepadPress(RIGHT)) {
-      code = 2;
-    }
-    if (MX_gamepadPress(UP)) {
-      code = 3;
-    }
-    if (MX_gamepadPress(DOWN)) {
-      code = 4;
-    }
-    if (MX_gamepadPress(X)) {
-     code = 5;
-    }
-    if (MX_gamepadPress(Y)) {
-      code = 6;
-    }
-    return (code);
-}
-
-
-void process(int code1){
-  if (code1 == 0){
-    MX_motor(1,0);
-     MX_motor(2,0);
-     MX_motor(7,0);
-     MX_motor(8,0);
+int judge() {
+  int code = 0;
+  if (MX_gamepadPress(LEFT)) {
+    code = 1;
   }
-      if (code1 == 1) {
-      turnleft();
-    }
-    if (code1 == 2) {
-      turnright();
-    }
-    if (code1 == 3) {
-      ahead();
-    }
-    if (code1 == 4) {
-      back();
-    }
-    if (code1 == 5) {
-      slideleft();
-    }
-    if (code1 == 6) {
-      slideright();
-    }
-
-
+  if (MX_gamepadPress(RIGHT)) {
+    code = 2;
+  }
+  if (MX_gamepadPress(UP)) {
+    code = 3;
+  }
+  if (MX_gamepadPress(DOWN)) {
+    code = 4;
+  }
+  if (MX_gamepadPress(X)) {
+    code = 5;
+  }
+  if (MX_gamepadPress(Y)) {
+    code = 6;
+  }
+  return (code);
 }
 
-//È«³ÌĞò×îÖ÷ÒªµÄº¯Êı°å¿é MX_motor µÚÒ»¸öÊÇ¶Ë¿ÚºÅ µÚ¶ş¸öÊÇËÙ¶È´óĞ¡
+void process(int code1) {
+  if (code1 == 0) {
+    MX_motor(1, 0);
+    MX_motor(2, 0);
+    MX_motor(7, 0);
+    MX_motor(8, 0);
+  }
+  if (code1 == 1) {
+    turnleft();
+  }
+  if (code1 == 2) {
+    turnright();
+  }
+  if (code1 == 3) {
+    ahead();
+  }
+  if (code1 == 4) {
+    back();
+  }
+  if (code1 == 5) {
+    slideleft();
+  }
+  if (code1 == 6) {
+    slideright();
+  }
+}
+
+//å…¨ç¨‹åºæœ€ä¸»è¦çš„å‡½æ•°æ¿å— MX_motor ç¬¬ä¸€ä¸ªæ˜¯ç«¯å£å· ç¬¬äºŒä¸ªæ˜¯é€Ÿåº¦å¤§å°
 void MX_motor(int port, int MX_V) {
   ;
   if (port == right1 or right2) {
-    MX_V = -MX_V;       //½«ÓÒ²àÂÖÌ¥ËÙ¶È±äÎª¸ºÖµ
+    MX_V = -MX_V; //å°†å³ä¾§è½®èƒé€Ÿåº¦å˜ä¸ºè´Ÿå€¼
   }
   MX_motorControl(port, 10, MX_V, 0);
 }
 
-
-//×ªÏòÄ£¿é
+//è½¬å‘æ¨¡å—
 void turnright() {
   MX_motor(left1, speed1);
   MX_motor(left2, speed1);
@@ -86,8 +81,7 @@ void turnleft() {
   MX_motor(right2, speed1);
 }
 
-
-//Æ½ÒÆÄ£¿é
+//å¹³ç§»æ¨¡å—
 void slideleft() {
   MX_motor(left1, speed1);
   MX_motor(left2, -speed1);
@@ -102,8 +96,7 @@ void slideright() {
   MX_motor(right2, speed1);
 }
 
-
-//Ç°ºóÒÆ¶¯Ä£¿é
+//å‰åç§»åŠ¨æ¨¡å—
 void ahead() {
   MX_motor(left1, speed1);
   MX_motor(left2, speed1);
@@ -117,4 +110,3 @@ void back() {
   MX_motor(right1, -speed1);
   MX_motor(right2, -speed1);
 }
-

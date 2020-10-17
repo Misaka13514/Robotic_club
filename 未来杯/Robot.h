@@ -4,17 +4,17 @@
 
 #ifndef _Included_Program_C
 #define _Included_Program_C
+#include <math.h>
+#include <pthread.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
-#include <pthread.h>
-#include <math.h>
-#define Main      main
-#define printf    Printf
-#define wait      Wait
+#define Main main
+#define printf Printf
+#define wait Wait
 #define true 1
 #define false 0
-#define PI	3.14
+#define PI 3.14
 // #ifdef __cplusplus
 // extern "C" {
 // #endif
@@ -24,16 +24,16 @@
  * Method:    JCC_1Main
  * Signature: (ILjava/lang/String;)V
  */
-//JNIEXPORT void JNICALL Java_com_abilix_utils_ProgramAndInterfaceC_JCC_1Main
-       // (JNIEnv *, jobject, jint, jstring);
+// JNIEXPORT void JNICALL Java_com_abilix_utils_ProgramAndInterfaceC_JCC_1Main
+// (JNIEnv *, jobject, jint, jstring);
 
 /*
  * Class:     abilix_utils_ProgramAndInterfaceC
  * Method:    JCC_1Exit
  * Signature: (ILjava/lang/String;)V
  */
-//JNIEXPORT void JNICALL Java_com_abilix_utils_ProgramAndInterfaceC_JCC_1Exit
-       // (JNIEnv *, jobject, jint, jstring);
+// JNIEXPORT void JNICALL Java_com_abilix_utils_ProgramAndInterfaceC_JCC_1Exit
+// (JNIEnv *, jobject, jint, jstring);
 
 //-------------执行器模块
 //执行器模块
@@ -50,22 +50,22 @@ void SmartLed(int nPort, int mModel, int nCycle, int nR, int nG, int nB);
 // 4、数字输出
 void SetDO(int nPort, int nEnable);
 // 5、扬声器
-void Play(char * mFileName);
-//6、扬声器直到播放完毕
-void PlayUntil(char * mFileName);
-//7、延时
+void Play(char *mFileName);
+// 6、扬声器直到播放完毕
+void PlayUntil(char *mFileName);
+// 7、延时
 void Wait(float nTime);
-//8、清除显示
+// 8、清除显示
 void Clear();
-//9、存储数据
-void SetEE(int addressId,int value);
-//10、读取数据
+// 9、存储数据
+void SetEE(int addressId, int value);
+// 10、读取数据
 int GetEE(int addressId);
-//11、拍照
+// 11、拍照
 void Camera(int pictureId);
-//12、录音
-void GetMicrophone(int recordId,int time);
-//13、麦克风声音强度
+// 12、录音
+void GetMicrophone(int recordId, int time);
+// 13、麦克风声音强度
 int GetMic();
 // 显示表情
 void PrintfExpression(char *expression);
@@ -74,22 +74,22 @@ void PrintfExpression(char *expression);
 //地面灰度、红外测距、超声测距、光敏、温度、读取模拟通道
 int GetAI(int nPort);
 int CheckKey(int nkey);
-int GetGray(int nPort);//灰度
-int GetChannelGray(int nPort,int mChannel);//灰度
-int GetTouch(int nPort); //触碰
-int GetUltraSonic(int nPort);//超声
-int GetFlame(int nPort);//火焰
-int GetTemperature(int nPort);//温度
-int GetMagnet(int nPort);//磁敏
-int GetLight(int nPort);//光敏
-int GetHumidity(int nPort);//湿度
-int GetInfrared(int nPort);//红外
-int GetAngle(int nPort);//角度
-int GetColor(int nPort);//颜色
+int GetGray(int nPort);                      //灰度
+int GetChannelGray(int nPort, int mChannel); //灰度
+int GetTouch(int nPort);                     //触碰
+int GetUltraSonic(int nPort);                //超声
+int GetFlame(int nPort);                     //火焰
+int GetTemperature(int nPort);               //温度
+int GetMagnet(int nPort);                    //磁敏
+int GetLight(int nPort);                     //光敏
+int GetHumidity(int nPort);                  //湿度
+int GetInfrared(int nPort);                  //红外
+int GetAngle(int nPort);                     //角度
+int GetColor(int nPort);                     //颜色
 //电量百分比
 int GetBattery();
 //获取运动传感器
-int GetMotionSensor(int nType,int nAxis);
+int GetMotionSensor(int nType, int nAxis);
 
 //复位电机编码器
 void ResetEncoder(int encoderId);
@@ -111,12 +111,12 @@ int getRecvCmd(int cmd, int index);
 //获取HID输入
 int getHIDValue(int nVauleType);
 //电机高级设置
-void SetMotorOverTurn(int nAValue,int nBValue,int nCValue,int nDValue);
-
+void SetMotorOverTurn(int nAValue, int nBValue, int nCValue, int nDValue);
 
 //巡线模块
 //巡线初始化
-void WER_InitRobot_5(int lPort, float fPower, int rPort, float rPower, int p1, int p2, int p3, int p4, int p5);
+void WER_InitRobot_5(int lPort, float fPower, int rPort, float rPower, int p1,
+                     int p2, int p3, int p4, int p5);
 void WER_InitRobot(int lPort, float fPower, int rPort, float rPower, int p0);
 //环境采集
 void WER_Set_GrayscaleSensor(void);
@@ -131,14 +131,16 @@ void WER_SetMotor(int lSpeed, int rSpeed, float fTime);
 void WER_SetMotor_T(int lSpeed, int rSpeed, float nTime);
 void WER_SetMotor_E(int lSpeed, int rSpeed, int nEncPort, int nEncoder);
 void WER_SetMotor_S(int lSpeed, int rSpeed, int lParam, int nSign, int rParam);
-void WER_SetMotor_CS(int lSpeed, int rSpeed, int lParam,int lChannel, int nSign, int rParam);
+void WER_SetMotor_CS(int lSpeed, int rSpeed, int lParam, int lChannel,
+                     int nSign, int rParam);
 //高级巡线
 void WER_AdvancedWay_T(int nSpeed, float nTime);
 void WER_AdvancedWay_E(int nSpeed, int nEncPort, int nEncoder);
 void WER_AdvancedWay_S(int nSpeed, int lParam, int nSign, int rParam);
-void WER_AdvancedWay_CS(int nSpeed, int lParam,int lChannel, int nSign, int rParam);
+void WER_AdvancedWay_CS(int nSpeed, int lParam, int lChannel, int nSign,
+                        int rParam);
 
-//math相关
+// math相关
 int iseven(float x);
 int isodd(float x);
 int isprime(float x);
@@ -146,27 +148,27 @@ int isint(float x);
 int ispositive(float x);
 int isnegative(float x);
 int isdivided(float x, float y);
-int Random(int mMin,int mMax);
+int Random(int mMin, int mMax);
 //创建线程/任务
-int CreateTask(void* (*mTaskName)(void *) , void* arg);
+int CreateTask(void *(*mTaskName)(void *), void *arg);
 
-//AI模块
+// AI模块
 //打开关闭AI识别
-void AIOpen(char * type,int mCommand);
+void AIOpen(char *type, int mCommand);
 //获取AI识别结果
-char * GetAICode(int nStart, char * AIFileName);
+char *GetAICode(int nStart, char *AIFileName);
 //获取二维码
-char * GetQRCode(float nTime);
-int GetAIString(int nStart, char *nAIFileName,char *mResult, int mResultSize);
-int GetQRString(float nTime,char *mResult, int mResultSize);
+char *GetQRCode(float nTime);
+int GetAIString(int nStart, char *nAIFileName, char *mResult, int mResultSize);
+int GetQRString(float nTime, char *mResult, int mResultSize);
 //打印log信息
 void LogPrint(const char *format, ...);
 
 void Printf(const char *format, ...);
 
-int range(int x,int xMin,int xMax);
+int range(int x, int xMin, int xMax);
 
-float rangef(float x,float xMin,float xMax);
+float rangef(float x, float xMin, float xMax);
 
 // #ifdef __cplusplus
 // }
